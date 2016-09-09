@@ -27,7 +27,13 @@ function! CloseWindowOrKillBuffer()
   let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
 
   " never bdelete a nerd tree
-  if matchstr(expand("%"), 'NERD') === 'NERD'
+  if match(expand('%'), 'NERD')
+    wincmd c
+    return
+  endif
+
+  " if term window, close gracefully
+  if match(expand('%'), 'term://')
     wincmd c
     return
   endif
@@ -50,6 +56,7 @@ set errorbells
 set hidden
 set keymodel=startsel,stopsel
 set mousemodel=popup
+set clipboard+=unnamedplus
 set nosol
 set ruler
 set scrolloff=3
@@ -61,7 +68,7 @@ set whichwrap=b,s,<,>,[,]
 set smartindent
 set listchars=eol:$,tab:→\ ,trail:_,extends:»,precedes:«,nbsp:·
 set linebreak
-let &showbreak = '↲ '
+let &showbreak = '↳ '
 
 set breakindent
 
@@ -112,6 +119,7 @@ set showmatch
 set number
 set cul
 set nocuc
+set termguicolors
 
 " Folds
 set foldlevelstart=99
@@ -119,18 +127,16 @@ set foldlevelstart=99
 let g:xml_syntax_folding=1
 let g:perl_fold=1
 
-if has('conceal')
-  set conceallevel=1
-  set listchars+=conceal:△
-endif
-
 " Plugins
 call plug#begin()
 
 " Utilities
 Plug 'editorconfig/editorconfig-vim'
-let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*', 'term://.*']
 let g:EditorConfig_exec_path = '/usr/bin/editorconfig'
+
+Plug 'mhinz/vim-grepper'
+nnoremap <leader>ag :Grepper -tool ag -grepprg ag --vimgrep -G '^.+\.txt'<CR>
 
 Plug 'tpope/vim-fugitive'
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -156,18 +162,16 @@ let g:startify_show_sessions = 1
 " Plug 'Konfekt/FastFold'
 
 " Edition
-" Plug 'mattn/emmet-vim'
-" let g:user_emmet_expandabbr_key = '<C-E>'
-" let g:user_emmet_expandword_key = '<C-S-E>'
-" let g:user_emmet_settings = {
-"   \ 'html' : {
-"   \   'empty_element_suffix' : '>'
-"   \   }
-"   \ }
+Plug 'mattn/emmet-vim'
+let g:user_emmet_install_global = 0
+let g:emmet_html5 = 1
+let g:user_emmet_expandabbr_key = '<C-E>'
+let g:user_emmet_expandword_key = '<C-S-E>'
+autocmd FileType html EmmetInstall
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 
 Plug 'tpope/vim-unimpaired'
@@ -178,6 +182,44 @@ vmap <C-S-Down> ]egv
 
 Plug 'junegunn/vim-easy-align'
 
+Plug 'Raimondi/delimitMate'
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:}"
+
+Plug 'heavenshell/vim-jsdoc'
+let g:jsdoc_enable_es6 = 1
+nmap <silent> <C-L> <Plug>(jsdoc)
+
+" Autocomplete
+
+Plug 'ternjs/tern_for_vim'
+let g:tern#command = ['tern']
+let g:tern#arguments = ['--persistent']
+
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+
+"inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : <SID>check_backspace() ? "\<Tab>" : deoplete#mappings#manual_complete()
+
+function! s:check_backspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+
+inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+
+Plug 'carlitux/deoplete-ternjs'
+
+" Linting
+Plug 'neomake/neomake'
+let g:neomake_javascript_enabled_makers = ['eslint']
+autocmd! BufWritePost * Neomake
+
 " Navigation
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 let NERDTreeShowHidden = 1
@@ -186,25 +228,68 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeBookmarksFile = '~/.config/nvim/.cache/NERDTreeBookmarks'
 nnoremap <F3> :NERDTreeToggle<CR>
 nnoremap <S-F3> :NERDTreeFind<CR>
+nnoremap <F15> :NERDTreeFind<CR>
+
+"Plug 'vifm/neovim-vifm'
+"let g:vifmUseLcd = 1
 
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
+let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+nnoremap <C-P> :FZF<CR>
 
 " Information
-Plug 'bling/vim-airline'
-let g:airline_poewrline_fonts = 1
+Plug 'vim-airline/vim-airline'
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#fnamecollapse = 1
 let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#hunks#non_zero_only = 1
+let g:airline#extensions#hunks#hunk_symbols = ['+', '±', '-']
 
-function! AirlineBranchName(name)
-  return '→ ' . a:name
+let g:airline_symbols = {}
+
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.crypt = ''
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.paste = ''
+let g:airline_symbols.spell = ''
+let g:airline_symbols.notexists = '∄'
+let g:airline_symbols.whitespace = ''
+
+let g:airline_section_c = '%{FilenameOrTerm()}'
+
+function! FilenameOrTerm()
+  return exists('b:term_title') ? b:term_title : expand('%:t')
 endfunction
+
+let g:airline_mode_map = {
+  \ '__' : '-',
+  \ 'n'  : 'N',
+  \ 'i'  : 'I',
+  \ 'R'  : 'R',
+  \ 'c'  : 'C',
+  \ 'v'  : 'V',
+  \ 'V'  : 'V',
+  \ '' : 'V',
+  \ 's'  : 'S',
+  \ 'S'  : 'S',
+  \ '' : 'S',
+  \ }
 
 Plug 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 3
+
+Plug 'airblade/vim-gitgutter'
+let g:gitgutter_map_keys = 0
 
 " Sessions
 " Plug 'xolox/vim-misc' | Plug 'xolox/vim-session'
@@ -216,6 +301,10 @@ let g:indent_guides_color_change_percent = 3
 " let g:session_directory = '~/.config/nvim/.cache/sessions'
 
 " Syntax
+Plug 'othree/yajs.vim', {'for': 'javascript'}
+Plug 'kchmck/vim-coffee-script', {'for': ['coffee', 'litcoffee']}
+Plug 'gregsexton/MatchTag', {'for': ['html', 'xml']}
+Plug 'digitaltoad/vim-jade', {'for': ['jade', 'pug']}
 
 " End plugins
 
@@ -223,13 +312,31 @@ let g:indent_guides_color_change_percent = 3
 command! CDhere call ChangeCurrDir()
 
 " Close window or delete buffer
-noremap <leader>q :call CloseWindowOrKillBuffer()<CR>
+"noremap <silent> <leader>q :call CloseWindowOrKillBuffer()<CR>
+noremap <silent> <leader>q <C-W>c
+noremap <silent> <leader>dd :bdelete<CR>
+
+" Backspace in visual mode deletes selection
+vnoremap <BS> d
 
 " Duplicate current line
 nmap <C-D> YPj$
 
+" Open/close folds
+nnoremap <silent> + zo
+nnoremap <silent> - zc
+
 " Quickly sort selection
 vmap <leader>s :sort<CR>
+
+" Buffers - previous/next: S-F12, F12
+nnoremap <silent> <S-F12> :bp<CR>
+nnoremap <silent> <F24> :bp<CR>
+nnoremap <silent> <F12> :bn<CR>
+
+" Reselect block after indenting
+vnoremap < <gv
+vnoremap > >gv
 
 " Smart home
 " http://vim.wikia.com/wiki/Smart_home
@@ -239,7 +346,24 @@ imap <Home> <C-O><Home>
 " Quickly toggle list
 nmap <leader>l :set list!<CR>
 
+" Clear search hilite
+nnoremap <silent> <Esc> :nohlsearch<CR><Esc>
+
+" Exit out of terminal mode on double esc
+tnoremap <Esc><Esc> <C-\><C-n>
+
 " autocmds
+
+" Easily close HTML tags
+" http://vim.wikia.com/wiki/Auto_closing_an_HTML_tag
+"autocmd FileType html,xml inoremap <buffer> </ </<C-X><C-O><C-N><Esc>a
+"autocmd FileType html,xml inoremap <buffer> <<kDivide> </<C-X><C-O><C-N><Esc>a
+
+autocmd FileType coffee setl fdm=indent
+autocmd FileType markdown setl nolist
+autocmd FileType python setl fdm=indent
+autocmd FileType text setl textwidth=78
+autocmd FileType vim setl fdm=indent keywordprg=:help
 
 " Go back to previous cursor position
 autocmd BufReadPost *
@@ -247,7 +371,19 @@ autocmd BufReadPost *
   \   exe 'normal! g`"zvzz' |
   \ endif
 
+" Colorschemes
+Plug 'whatyouhide/vim-gotham'
+Plug 'raphamorim/lucario'
+Plug 'jaromero/vim-monokai-refined'
+Plug 'cseelus/vim-colors-lucid'
+Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'rakr/vim-one'
+
 " Finish loading
 call plug#end()
 
-colorscheme zellner
+" Possibly fix colors?
+source ~/.config/nvim/fixcolors.vim
+
+set background=dark
+colorscheme lucario
