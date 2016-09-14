@@ -192,7 +192,7 @@ let g:startify_session_before_save = [
   \ 'echo "Cleaning up before saving..."',
   \ 'silent! NERDTreeTabsClose'
   \ ]
-let g:startify_session_persistence = 0
+let g:startify_session_persistence = 1
 let g:startify_session_delete_buffers = 0
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 0
