@@ -157,9 +157,11 @@ autocmd BufReadPost *
 source ~/.config/nvim/fixcolors.vim
 
 let g:seoul256_background = 235
+" let g:tender_airline = 1
+" let g:airline_theme = 'tender'
 set background=dark
 
-colorscheme lucario
+colorscheme one
 " }}}
 
 " Plugin settings {{{

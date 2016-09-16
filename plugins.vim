@@ -52,9 +52,11 @@ Plug 'gabrielelana/vim-markdown', {'for': 'markdown'}
 
 " Colorschemes
 Plug 'cseelus/vim-colors-lucid'
+Plug 'jacoborus/tender'
 Plug 'jaromero/vim-monokai-refined'
 Plug 'junegunn/seoul256.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'mhinz/vim-janah'
 Plug 'rakr/vim-one'
 Plug 'raphamorim/lucario'
 Plug 'whatyouhide/vim-gotham'
