@@ -1,4 +1,4 @@
-" vim: fdm=marker fmr={{{,}}} fdl=0
+" vim: fdm=marker fmr={{{,}}}
 
 source ~/.config/nvim/plugins.vim
 source ~/.config/nvim/funcs.vim

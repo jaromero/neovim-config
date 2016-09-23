@@ -1,4 +1,4 @@
-" vim: fdm=marker fmr={{{,}}} fdl=0
+" vim: fdm=marker fmr={{{,}}}
 
 " General helper functions
 
