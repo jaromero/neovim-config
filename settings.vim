@@ -143,7 +143,7 @@ cnoremap <C-P> <Up>
 nnoremap <leader>r :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR><C-L>
 
 " Exit out of terminal mode on double esc
-tnoremap <Esc><Esc> <C-\><C-n>
+tnoremap <Esc><Esc> <C-\><C-N>
 
 " }}}
 
@@ -176,14 +176,14 @@ autocmd BufReadPost *
 source ~/.config/nvim/fixcolors.vim
 
 let g:seoul256_background = 235
-" let g:tender_airline = 1
-" let g:airline_theme = 'tender'
+let g:tender_airline = 1
+let g:airline_theme = 'tender'
 let g:wwdc16_term_italics = 1
 let g:wwdc16_term_trans_bg = 1
 
 set background=dark
 
-colorscheme one
+colorscheme tender
 " }}}
 
 " Plugin settings {{{
