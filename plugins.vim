@@ -53,9 +53,13 @@ Plug 'digitaltoad/vim-jade', {'for': ['jade', 'pug']}
 Plug 'docunext/closetag.vim', {'for': ['html', 'xml']}
 Plug 'gabrielelana/vim-markdown', {'for': 'markdown'}
 Plug 'gregsexton/MatchTag', {'for': ['html', 'xml']}
+Plug 'jelera/vim-javascript-syntax', {'for': 'javascript'}
 Plug 'kchmck/vim-coffee-script', {'for': ['coffee', 'litcoffee']}
-Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx', {'for': 'javascript'}
-Plug 'othree/yajs.vim', {'for': 'javascript'}
+" Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx', {'for': 'javascript'}
+Plug 'mxw/vim-jsx', {'for': 'javascript'}
+Plug 'othree/html5.vim', {'for': 'html'}
+" Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+" Plug 'othree/yajs.vim', {'for': 'javascript'}
 Plug 'posva/vim-vue', {'for': 'javascript'}
 
 " Colorschemes
@@ -68,8 +72,10 @@ Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'lifepillar/vim-wwdc16-theme'
 Plug 'mhinz/vim-janah'
 Plug 'morhetz/gruvbox'
+Plug 'muellan/am-colors'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nlknguyen/papercolor-theme'
+Plug 'philpl/vim-adventurous'
 Plug 'rakr/vim-one'
 Plug 'raphamorim/lucario'
 Plug 'whatyouhide/vim-gotham'

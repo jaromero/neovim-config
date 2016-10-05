@@ -145,6 +145,15 @@ nnoremap <leader>r :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR><C-L>
 " Exit out of terminal mode on double esc
 tnoremap <Esc><Esc> <C-\><C-N>
 
+" Show syntax highlighting group for word under cursor
+function! <SID>SynStack()
+    if !exists('*synstack')
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunction
+nnoremap <C-U> :call <SID>SynStack()<CR>
+
 " }}}
 
 " General autocmds {{{
@@ -158,11 +167,14 @@ tnoremap <Esc><Esc> <C-\><C-N>
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave *  set nocursorline
 
-autocmd FileType coffee setl fdm=indent
+autocmd FileType coffee setl foldmethod=indent
 autocmd FileType markdown setl nolist textwidth=78
-autocmd FileType python setl fdm=indent
+autocmd FileType python setl foldmethod=indent
 autocmd FileType text setl textwidth=78
-autocmd FileType vim setl fdm=indent
+autocmd FileType vim setl foldmethod=indent
+
+" Set *.vue files as html
+autocmd BufReadPost *.vue set filetype=html
 
 " Go back to previous cursor position
 autocmd BufReadPost *
@@ -176,14 +188,16 @@ autocmd BufReadPost *
 source ~/.config/nvim/fixcolors.vim
 
 let g:seoul256_background = 235
-let g:tender_airline = 1
-let g:airline_theme = 'tender'
+" let g:tender_airline = 1
+" let g:airline_theme = 'tender'
 let g:wwdc16_term_italics = 1
 let g:wwdc16_term_trans_bg = 1
+let g:gruvbox_italic = 1
+let g:gruvbox_italicize_comments = 0
 
 set background=dark
 
-colorscheme tender
+colorscheme gruvbox
 " }}}
 
 " Plugin settings {{{
@@ -255,7 +269,7 @@ autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:}"
 
 " heavenshell/vim-jsdoc
 let g:jsdoc_enable_es6 = 1
-nnoremap <silent> <C-CR> <Plug>(jsdoc)
+nnoremap <silent> <C-CR> :JsDoc<CR>
 
 " jiangmiao/auto-pairs
 
@@ -341,7 +355,7 @@ autocmd! BufWritePost * Neomake
 " junegunn/fzf
 
 " junegunn/fzf.vim
-let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag -l --hidden --ignore .git -g ""'
 nnoremap <C-P> :FZF<CR>
 
 " scrooloose/nerdtree
@@ -427,6 +441,8 @@ nnoremap <leader>il :IndentLinesToggle<CR>
 
 " Syntax {{{
 
+" ap/vim-css-color
+
 " digitaltoad/vim-jade
 
 " docunext/closetag.vim
@@ -437,10 +453,17 @@ let g:markdown_enable_input_abbreviations = 0
 
 " gregsexton/MatchTag
 
+" jelera/vim-javascript-syntax
+
 " kchmck/vim-coffee-script
 
 " mxw/vim-jsx
 " let g:jsx_ext_required = 0
+
+"othree/html5.vim
+
+"othree/javascript-libraries-syntax
+" let g:used_javascript_libs = 'jquery,underscore,angularjs,angularui,angularuirouter,jasmine,ramda'
 
 " othree/yajs.vim
 
