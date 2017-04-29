@@ -3,7 +3,9 @@
 " Basic editor prefs {{{
 set clipboard+=unnamedplus
 set errorbells
+set diffopt+=vertical
 set hidden
+set inccommand=nosplit
 set keymodel=startsel,stopsel
 set mousemodel=popup
 set ruler
@@ -79,7 +81,9 @@ set nocursorcolumn
 set nocursorline
 set number
 set showmatch
-set termguicolors
+if ($TERMINOLOGY != 1)
+  set termguicolors
+endif
 " }}}
 
 " Folds {{{
@@ -112,9 +116,8 @@ vnoremap <leader>s :sort i<CR>
 vnoremap <leader>S :sort<CR>
 
 " Buffers - previous/next: S-F12, F12
-nnoremap <silent> <S-F12> :bp<CR>
-nnoremap <silent> <F24> :bp<CR>
-nnoremap <silent> <F12> :bn<CR>
+nnoremap <silent> <leader>{ :bp<CR>
+nnoremap <silent> <leader>} :bn<CR>
 
 " Reselect block after indenting
 vnoremap < <gv
@@ -168,13 +171,16 @@ autocmd InsertEnter * set cursorline
 autocmd InsertLeave *  set nocursorline
 
 autocmd FileType coffee setl foldmethod=indent
-autocmd FileType markdown setl nolist textwidth=78
+autocmd FileType markdown setl nolist textwidth=0
 autocmd FileType python setl foldmethod=indent
 autocmd FileType text setl textwidth=78
 autocmd FileType vim setl foldmethod=indent
 
 " Set *.vue files as html
-autocmd BufReadPost *.vue set filetype=html
+" autocmd BufRead,BufNewFile *.vue set filetype=html
+
+" Set *scss files as scss.css
+autocmd BufRead,BufNewFile *.scss set filetype=scss.css
 
 " Go back to previous cursor position
 autocmd BufReadPost *
@@ -185,7 +191,7 @@ autocmd BufReadPost *
 " }}}
 
 " Colorscheme {{{
-source ~/.config/nvim/fixcolors.vim
+" source ~/.config/nvim/fixcolors.vim
 
 let g:seoul256_background = 235
 " let g:tender_airline = 1
@@ -194,10 +200,12 @@ let g:wwdc16_term_italics = 1
 let g:wwdc16_term_trans_bg = 1
 let g:gruvbox_italic = 1
 let g:gruvbox_italicize_comments = 0
+" let g:neodark#use_256color = 1
+let g:neodark#terminal_transparent = 1
 
 set background=dark
 
-colorscheme gruvbox
+colorscheme PaperColor
 " }}}
 
 " Plugin settings {{{
@@ -223,7 +231,7 @@ let g:startify_list_order = [
   \ ['Commands'],
   \ 'commands',
   \ ]
-let g:startify_bookmarks = ['~/.config/nvim/', '~/.zshrc']
+let g:startify_bookmarks = ['~/.config/nvim/', '~/.zshrc', '~/.config/alacritty/alacritty.yml']
 let g:startify_commands = [':PlugUpdate']
 let g:startify_update_oldfiles = 1
 let g:startify_session_before_save = [
@@ -278,17 +286,19 @@ nnoremap <silent> <C-CR> :JsDoc<CR>
 " junegunn/vim-easy-align
 
 " mattn/emmet-vim
-let g:user_emmet_install_global = 0
-let g:emmet_html5 = 1
-let g:user_emmet_expandabbr_key = '<C-E>'
-let g:user_emmet_expandword_key = '<C-S-E>'
-autocmd FileType html EmmetInstall
+" let g:user_emmet_install_global = 0
+" let g:emmet_html5 = 1
+" let g:user_emmet_expandabbr_key = '<C-E>'
+" let g:user_emmet_expandword_key = '<C-S-E>'
+" autocmd FileType html EmmetInstall
 
 " scrooloose/nerdcommenter
 let g:NERDSpaceDelims = 1
 
 " shime/vim-livedown
+let g:livedown_autorun = 1
 let g:livedown_port = 8999
+let g:livedown_open = 0
 nnoremap <leader>md :LivedownToggle<CR>
 
 " tpope/vim-repeat
@@ -299,9 +309,13 @@ nnoremap <leader>md :LivedownToggle<CR>
 
 " tpope/vim-unimpaired
 nmap <C-S-Up> [e
+nmap <C-S-k> [e
 nmap <C-S-Down> ]e
+nmap <C-S-j> ]e
 vmap <C-S-Up> [egv
+vmap <C-S-k> [egv
 vmap <C-S-Down> ]egv
+vmap <C-S-j> ]egv
 
 " }}}
 
@@ -336,6 +350,7 @@ let g:tern#arguments = ['--persistent']
 
 " neomake/neomake
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_scss_enabled_makers = ['sasslint']
 let g:neomake_open_list = 2
 let g:neomake_list_height = 2
 let g:neomake_warning_sign = {
@@ -360,13 +375,14 @@ nnoremap <C-P> :FZF<CR>
 
 " scrooloose/nerdtree
 let NERDTreeBookmarksFile = '~/.config/nvim/.cache/NERDTreeBookmarks'
+let NERDTreeCascadeSingleChildDir = 1
 let NERDTreeChDirMode = 1
 let NERDTreeQuitOnOpen = 0
 let NERDTreeShowHidden = 1
 let NERDTreeShowBookmarks = 1
-nnoremap <F3> :NERDTreeToggle<CR>
-nnoremap <S-F3> :NERDTreeFind<CR>
-nnoremap <F15> :NERDTreeFind<CR>
+
+nnoremap <leader>f :NERDTreeToggle<CR>
+nnoremap <leader>F :NERDTreeFind<CR>
 
 " }}}
 
