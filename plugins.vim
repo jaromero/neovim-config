@@ -14,7 +14,7 @@ Plug 'tpope/vim-fugitive'
 
 " Editing
 " Plug 'Raimondi/delimitMate'
-Plug 'heavenshell/vim-jsdoc', {'for': 'javascript'}
+Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
@@ -29,8 +29,8 @@ Plug 'tpope/vim-unimpaired'
 " Autocomplete
 Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx']}
-Plug 'ternjs/tern_for_vim', {'for': ['javascript', 'javascript.jsx']}
+Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
+Plug 'ternjs/tern_for_vim', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
 
 " Linting
 Plug 'neomake/neomake'
@@ -55,19 +55,21 @@ Plug 'docunext/closetag.vim', {'for': ['html', 'xml']}
 Plug 'gabrielelana/vim-markdown', {'for': 'markdown'}
 Plug 'gregsexton/MatchTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax'
-Plug 'jelera/vim-javascript-syntax', {'for': ['javascript', 'javascript.jsx', 'html']}
+" Plug 'jelera/vim-javascript-syntax'
 Plug 'kchmck/vim-coffee-script', {'for': ['coffee', 'litcoffee']}
 " Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx'
-" Plug 'MaxMEllon/vim-jsx-pretty', {'for': ['javascript.jsx', 'html']}
-Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx', 'html']}
+Plug 'MaxMEllon/vim-jsx-pretty', {'for': ['javascript.jsx', 'html']}
+" Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx', 'html']}
 Plug 'othree/html5.vim', {'for': 'html'}
 " Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
-" Plug 'othree/yajs.vim', {'for': 'javascript'}
+" Plug 'othree/yajs.vim', {'for': ['javascript', 'javascript.jsx', 'html']}
+Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue', {'for': ['javascript', 'html', 'vue']}
 
 " Colorschemes
+Plug 'ajh17/Spacegray.vim'
 Plug 'cseelus/vim-colors-lucid'
-Plug 'dracula/vim'
+Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'jacoborus/tender'
 Plug 'jaromero/vim-monokai-refined'
 Plug 'jnurmine/zenburn'
@@ -75,15 +77,23 @@ Plug 'junegunn/seoul256.vim'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'lifepillar/vim-wwdc16-theme'
-Plug 'mhinz/vim-janah'
+Plug 'mbbill/vim-seattle'
+Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
 Plug 'muellan/am-colors'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nlknguyen/papercolor-theme'
 Plug 'philpl/vim-adventurous'
+Plug 'Pychimp/vim-luna'
 Plug 'rakr/vim-one'
-Plug 'raphamorim/lucario'
-Plug 'romainl/Apprentice'
+Plug 'romainl/Apprentice', {'branch': 'fancylines-and-neovim'}
+Plug 'sjl/badwolf'
+Plug 'tomasr/molokai'
+Plug 'trevordmiller/nova-vim'
+Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'whatyouhide/vim-gotham'
+Plug 'zeis/vim-kolor'
+
+Plug 'tsiemens/vim-aftercolors'
 
 call plug#end()

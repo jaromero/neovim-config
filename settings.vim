@@ -77,6 +77,7 @@ let g:mapleader=","
 " Visual config {{{
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
+set mouse=a
 set nocursorcolumn
 set nocursorline
 set number
@@ -195,17 +196,22 @@ autocmd BufReadPost *
 
 let g:seoul256_background = 235
 " let g:tender_airline = 1
-" let g:airline_theme = 'tender'
 let g:wwdc16_term_italics = 1
 let g:wwdc16_term_trans_bg = 1
 let g:gruvbox_italic = 1
 let g:gruvbox_italicize_comments = 0
-" let g:neodark#use_256color = 1
+let g:neodark#use_256color = 1
 let g:neodark#terminal_transparent = 1
+let g:quantum_black = 1
+let g:quantum_italics = 1
+let g:spacegray_italicize_comments = 1
+" let g:airline_theme = 'one'
+let g:one_allow_italics = 1
 
 set background=dark
 
-colorscheme PaperColor
+" colorscheme PaperColor
+colorscheme quantum
 " }}}
 
 " Plugin settings {{{
@@ -250,7 +256,10 @@ let g:startify_show_sessions = 1
 " nnoremap <M-F1> :Startify<CR>
 
 " mhinz/vim-grepper
-nnoremap <leader>ag :Grepper -tool ag -grepprg ag --vimgrep -G '^.+\.txt'<CR>
+let g:grepper = {}
+let g:grepper.dir = 'repo,cwd'
+nnoremap <leader>ag :Grepper -tool ag -grepprg ag --vimgrep --ignore \(node_modules\\|bower_components\)<CR>
+nnoremap <leader>af :Grepper -buffers<CR>
 
 " qpkorr/vim-bufkill
 nmap <silent> <leader>dd :BD<CR>
@@ -349,6 +358,7 @@ let g:tern#arguments = ['--persistent']
 " Linting {{{
 
 " neomake/neomake
+let g:neomake_html_enabled_makers = []
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_scss_enabled_makers = ['sasslint']
 let g:neomake_open_list = 2
@@ -476,12 +486,19 @@ let g:markdown_enable_input_abbreviations = 0
 " mxw/vim-jsx
 " let g:jsx_ext_required = 0
 
+" MaxMEllon/vim-jsx-pretty
+let g:vim_jsx_pretty_colorful_config = 1
+
 "othree/html5.vim
 
 "othree/javascript-libraries-syntax
 " let g:used_javascript_libs = 'jquery,underscore,angularjs,angularui,angularuirouter,jasmine,ramda'
 
 " othree/yajs.vim
+
+" pangloss/vim-javascript
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
 
 " posva/vim-vue
 
