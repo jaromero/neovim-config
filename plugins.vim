@@ -33,7 +33,8 @@ Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx', 'vue',
 Plug 'ternjs/tern_for_vim', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
 
 " Linting
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
+Plug 'w0rp/ale'
 
 " Navigation
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}

@@ -360,7 +360,7 @@ let g:tern#arguments = ['--persistent']
 " neomake/neomake
 let g:neomake_html_enabled_makers = []
 let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_scss_enabled_makers = ['sasslint']
+let g:neomake_scss_enabled_makers = ['stylelint']
 let g:neomake_open_list = 2
 let g:neomake_list_height = 2
 let g:neomake_warning_sign = {
@@ -371,7 +371,20 @@ let g:neomake_error_sign = {
   \ 'text': '',
   \ 'texthl': 'ErrorMsg',
   \ }
-autocmd! BufWritePost * Neomake
+" autocmd! BufWritePost * Neomake
+
+" w0rp/ale
+let g:ale_sign_warning = ''
+let g:ale_sign_error = ''
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_format = '[%severity%][%linter%] %s'
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
+
+let g:ale_linters = {
+  \ 'html': []
+  \ }
 
 " }}}
 
