@@ -19,8 +19,10 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 " Plug 'mattn/emmet-vim', {'for': 'html'}
-Plug 'scrooloose/nerdcommenter'
+" Plug 'scrooloose/nerdcommenter'
 Plug 'shime/vim-livedown', {'for': 'markdown'}
+Plug 'tomtom/tcomment_vim', {'as': 'tcomment'}
+" Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
@@ -40,6 +42,8 @@ Plug 'w0rp/ale'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+" Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'wesQ3/vim-windowswap'
 
 " Information
 Plug 'airblade/vim-gitgutter'
@@ -53,6 +57,8 @@ Plug 'ap/vim-css-color'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'digitaltoad/vim-jade', {'for': ['jade', 'pug']}
 Plug 'docunext/closetag.vim', {'for': ['html', 'xml']}
+Plug 'elzr/vim-json', {'for': 'json'}
+Plug 'fleischie/vim-styled-components', {'for': ['javascript', 'javascript.jsx', 'vue']}
 Plug 'gabrielelana/vim-markdown', {'for': 'markdown'}
 Plug 'gregsexton/MatchTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax'
@@ -66,6 +72,7 @@ Plug 'othree/html5.vim', {'for': 'html'}
 " Plug 'othree/yajs.vim', {'for': ['javascript', 'javascript.jsx', 'html']}
 Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue', {'for': ['javascript', 'html', 'vue']}
+Plug 'tpope/vim-jdaddy', {'for': 'json'}
 
 " Colorschemes
 Plug 'ajh17/Spacegray.vim'

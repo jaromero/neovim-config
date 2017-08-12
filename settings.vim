@@ -51,7 +51,7 @@ endif
 
 " Backups and swap {{{
 set backup
-set backupcopy=auto
+set backupcopy=yes
 set backupdir=~/tmp
 set directory=~/.config/nvim/.cache/swap//
 
@@ -75,7 +75,13 @@ let g:mapleader=","
 " }}}
 
 " Visual config {{{
-" let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+if has("nvim")
+  set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+    \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+    \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+  autocmd VimLeave * set guicursor=a:block-blinkon0
+endif
 
 set mouse=a
 set nocursorcolumn
@@ -147,7 +153,9 @@ cnoremap <C-P> <Up>
 nnoremap <leader>r :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR><C-L>
 
 " Exit out of terminal mode on double esc
-tnoremap <Esc><Esc> <C-\><C-N>
+if has("nvim")
+  tnoremap <Esc><Esc> <C-\><C-N>
+endif
 
 " Show syntax highlighting group for word under cursor
 function! <SID>SynStack()
@@ -205,13 +213,12 @@ let g:neodark#terminal_transparent = 1
 let g:quantum_black = 1
 let g:quantum_italics = 1
 let g:spacegray_italicize_comments = 1
-" let g:airline_theme = 'one'
+let g:airline_theme = 'one'
 let g:one_allow_italics = 1
 
 set background=dark
 
-" colorscheme PaperColor
-colorscheme quantum
+colorscheme one
 " }}}
 
 " Plugin settings {{{
@@ -310,6 +317,25 @@ let g:livedown_port = 8999
 let g:livedown_open = 0
 nnoremap <leader>md :LivedownToggle<CR>
 
+" tomtom/tcomment
+let g:tcommentMaps = 0
+let g:tcommentGuessFileType = 0
+
+nmap <leader>cc :TComment<CR>
+nmap <leader>cm :TCommentBlock<CR>
+nmap <leader>ci :TCommentInline<CR>
+nmap <leader>cr :TCommentRight<CR>
+
+vmap <leader>cc :TComment<CR>
+vmap <leader>cm :TCommentBlock<CR>
+vmap <leader>ci :TCommentInline<CR>
+vmap <leader>cr :TCommentRight<CR>
+
+" tpope/vim-commentary
+" nmap <leader>cc gcc
+" nmap <leader>ca gcgc
+" vmap <leader>cc gc
+
 " tpope/vim-repeat
 
 " tpope/vim-speeddating
@@ -379,11 +405,14 @@ let g:ale_sign_error = ''
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_format = '[%severity%][%linter%] %s'
-let g:ale_set_quickfix = 1
-let g:ale_open_list = 1
+" let g:ale_set_quickfix = 1
+" let g:ale_open_list = 0
 
 let g:ale_linters = {
-  \ 'html': []
+  \ 'css': ['stylelint'],
+  \ 'html': [],
+  \ 'sass': ['stylelint'],
+  \ 'scss': ['stylelint']
   \ }
 
 " }}}
@@ -407,6 +436,18 @@ let NERDTreeShowBookmarks = 1
 nnoremap <leader>f :NERDTreeToggle<CR>
 nnoremap <leader>F :NERDTreeFind<CR>
 
+" vim-ctrlspace/vim-ctrlspace
+" let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
+
+" if executable('ag')
+"   let g:CtrlSpaceGlobCommand = 'ag -l --hidden --no-color -g ""'
+" endif
+
+" nnoremap <silent><C-Space> :CtrlSpace<CR>
+" nnoremap <silent><C-P> :CtrlSpace O<CR>
+
+" wesQ3/vim-windowswap
+
 " }}}
 
 " Information {{{
@@ -425,6 +466,11 @@ let g:indent_guides_color_change_percent = 3
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffers_label = 'bufs'
+let g:airline#extensions#tabline#tabs_label = 'tabs'
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_nr_show = 0
+let g:airline#extensions#tabline#buffer_nr_format = '%s┆'
 let g:airline#extensions#tabline#fnamecollapse = 1
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
@@ -433,6 +479,8 @@ let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline#extensions#hunks#hunk_symbols = ['+', '±', '-']
+let g:airline#extensions#ale#warning_symbol = ' '
+let g:airline#extensions#ale#error_symbol = ' '
 
 let g:airline_symbols = {}
 
