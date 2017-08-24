@@ -112,7 +112,7 @@ noremap <silent> <leader>q <C-W>c
 vnoremap <BS> d
 
 " Duplicate current line
-nnoremap <C-D> YPj$
+nnoremap <M-d> YPj$
 
 " Open/close folds
 nnoremap <silent> + zo
@@ -164,7 +164,7 @@ function! <SID>SynStack()
     endif
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunction
-nnoremap <C-U> :call <SID>SynStack()<CR>
+nnoremap <M-u> :call <SID>SynStack()<CR>
 
 " }}}
 
@@ -296,6 +296,7 @@ let g:jsdoc_enable_es6 = 1
 nnoremap <silent> <C-CR> :JsDoc<CR>
 
 " jiangmiao/auto-pairs
+let g:AutoPairsShortcutToggle = ''
 
 " junegunn/goyo.vim
 
@@ -343,14 +344,14 @@ vmap <leader>cr :TCommentRight<CR>
 " tpope/vim-surround
 
 " tpope/vim-unimpaired
-nmap <C-S-Up> [e
-nmap <C-S-k> [e
-nmap <C-S-Down> ]e
-nmap <C-S-j> ]e
-vmap <C-S-Up> [egv
-vmap <C-S-k> [egv
-vmap <C-S-Down> ]egv
-vmap <C-S-j> ]egv
+nmap <M-S-Up> [e
+nmap <M-S-K> [e
+nmap <M-S-Down> ]e
+nmap <M-S-J> ]e
+vmap <M-S-Up> [egv
+vmap <M-S-K> [egv
+vmap <M-S-Down> ]egv
+vmap <M-S-J> ]egv
 
 " }}}
 
@@ -423,7 +424,8 @@ let g:ale_linters = {
 
 " junegunn/fzf.vim
 let $FZF_DEFAULT_COMMAND = 'ag -l --hidden --ignore .git -g ""'
-nnoremap <C-P> :FZF<CR>
+nmap <M-p> :FZF<CR>
+nmap <M-P> :Buffers<CR>
 
 " scrooloose/nerdtree
 let NERDTreeBookmarksFile = '~/.config/nvim/.cache/NERDTreeBookmarks'
