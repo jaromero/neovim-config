@@ -1,0 +1,31 @@
+snippet comp "Quick Vue Component"
+<template>
+</template>
+
+<script>
+export default {
+	name: '${1:MyComponent}',
+	props: {${2}},
+	data() {
+		return {${3}};
+	},
+	computed: {${4}},
+	methods: {${5}},
+};
+</script>
+
+<style scoped>
+</style>
+endsnippet
+
+snippet transition "CSS transition"
+.${1:fade}-enter-active,
+.$1-leave-active {
+	transition: ${2:opacity} ${3:0.5s};
+}
+
+.$1-enter,
+.$1-leave-to {
+	$2: ${4:0};
+}
+endsnippet

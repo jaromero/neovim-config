@@ -11,11 +11,12 @@ Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-grepper'
 Plug 'qpkorr/vim-bufkill'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
 " Editing
-" Plug 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 " Plug 'mattn/emmet-vim', {'for': 'html'}
@@ -28,11 +29,25 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 " Autocomplete
+Plug 'roxma/nvim-completion-manager'
+
 Plug 'Shougo/context_filetype.vim'
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
+" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
+Plug 'calebeby/ncm-css', {'do': 'yarn'}
+" Plug 'othree/csscomplete.vim'
+Plug 'roxma/nvim-cm-tern', {'do': 'yarn'}
 Plug 'ternjs/tern_for_vim', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
+
+" Language servers
+" Plug 'autozimu/LanguageClient-neovim', {'do': ':UpdateRemotePlugins'}
 
 " Linting
 " Plug 'neomake/neomake'
@@ -76,8 +91,10 @@ Plug 'tpope/vim-jdaddy', {'for': 'json'}
 
 " Colorschemes
 Plug 'ajh17/Spacegray.vim'
+Plug 'chriskempson/base16-vim'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'drewtempelmeyer/palenight.vim'
 Plug 'jacoborus/tender'
 Plug 'jaromero/vim-monokai-refined'
 Plug 'jnurmine/zenburn'
@@ -98,6 +115,7 @@ Plug 'romainl/Apprentice', {'branch': 'fancylines-and-neovim'}
 Plug 'sjl/badwolf'
 Plug 'tomasr/molokai'
 Plug 'trevordmiller/nova-vim'
+Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'whatyouhide/vim-gotham'
 Plug 'zeis/vim-kolor'

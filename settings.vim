@@ -83,11 +83,17 @@ if has("nvim")
   autocmd VimLeave * set guicursor=a:block-blinkon0
 endif
 
+if has("conceal")
+  set conceallevel=2
+  set concealcursor=niv
+endif
+
 set mouse=a
 set nocursorcolumn
-set nocursorline
+set cursorline
 set number
 set showmatch
+
 if ($TERMINOLOGY != 1)
   set termguicolors
 endif
@@ -135,8 +141,10 @@ vnoremap > >gv
 noremap <expr> <Home> (col('.') == matchend(getline('.'), '^\s*')+1 ? '0' : '^')
 imap <Home> <C-O><Home>
 
-" Quickly toggle list
-nnoremap <leader>l :set list!<CR>
+" Quickly toggle visuals
+nnoremap <silent> <leader>ll :set list!<CR>
+nnoremap <silent> <leader>lc :set cursorline!<CR>
+nnoremap <silent> <leader>lv :set cursorcolumn!<CR>
 
 " Clear search highlight
 nnoremap <silent> <Esc> :nohlsearch<CR><Esc>
@@ -188,8 +196,11 @@ autocmd FileType vim setl foldmethod=indent
 " Set *.vue files as html
 " autocmd BufRead,BufNewFile *.vue set filetype=html
 
+" Hopefully fix syntax highlighting for *.vue files
+autocmd FileType vue syntax sync fromstart
+
 " Set *scss files as scss.css
-autocmd BufRead,BufNewFile *.scss set filetype=scss.css
+" autocmd BufRead,BufNewFile *.scss set filetype=scss.css
 
 " Go back to previous cursor position
 autocmd BufReadPost *
@@ -203,22 +214,37 @@ autocmd BufReadPost *
 " source ~/.config/nvim/fixcolors.vim
 
 let g:seoul256_background = 235
+
 " let g:tender_airline = 1
+
 let g:wwdc16_term_italics = 1
 let g:wwdc16_term_trans_bg = 1
+
 let g:gruvbox_italic = 1
 let g:gruvbox_italicize_comments = 0
+
 let g:neodark#use_256color = 1
 let g:neodark#terminal_transparent = 1
+
+let g:deepspace_italics = 1
+" let g:airline_theme = 'deep_space'
+
 let g:quantum_black = 1
 let g:quantum_italics = 1
+" let g:airline_theme = 'quantum'
+
 let g:spacegray_italicize_comments = 1
-let g:airline_theme = 'one'
+
+" let g:airline_theme = 'one'
+
 let g:one_allow_italics = 1
+
+let g:palenight_terminal_italics = 1
 
 set background=dark
 
-colorscheme one
+" colorscheme one
+colorscheme palenight
 " }}}
 
 " Plugin settings {{{
@@ -282,12 +308,14 @@ nnoremap <silent> <leader>gw :Gwrite<CR>
 nnoremap <silent> <leader>gx :Gremove<CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
+" tpope/vim-rhubarb
+
 " }}}
 
 " Editing {{{
 
 " Raimondi/delimitMate
-let delimitMate_expand_cr = 1
+let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
 autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:}"
 
@@ -355,30 +383,85 @@ vmap <M-S-J> ]egv
 
 " }}}
 
+" Snippets {{{
+
+" SirVer/ultisnips
+" let g:UltiSnipsSnippetsDir="~/.config/nvim/snippets"
+let g:UltiSnipsEnableSnipMate = 0
+let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
+let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+inoremap <silent> <C-E> <C-R>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<CR>
+
+" }}}
+
 " Autocomplete {{{
 
 " Shougo/context_filetype.vim
 
 " Shougo/deoplete.nvim
+" Shougo/neosnippet.vim
+" Shougo/neosnippet-snippets
+
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_ignore_case = 1
+
+" let g:deoplete#sources = {}
+" let g:deoplete#sources._ = ['buffer', 'tag', 'ultisnips']
 
 function! s:check_backspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+" function! s:neosnippet_complete()
+"   if pumvisible()
+"     if neosnippet#expandable_or_jumpable()
+"       return deoplete#close_popup() . "\<Plug>(neosnippet_expand_or_jump)"
+"     endif
+"
+"     return deoplete#close_popup()
+"   endif
+"
+"   if neosnippet#expandable_or_jumpable()
+"     return "\<Plug>(neosnippet_expand_or_jump)"
+"   endif
+"
+"   return "\<Tab>"
+" endfunction
 
-call deoplete#custom#set('_', 'matchers', ['matcher_length', 'matcher_full_fuzzy'])
+" imap <expr><Tab> <SID>neosnippet_complete()
+
+" inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+" inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
+
+" imap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+" imap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+
+" call deoplete#custom#set('_', 'matchers', ['matcher_length', 'matcher_full_fuzzy'])
+
+" let g:neosnippet#snippets_directory=['~/.config/nvim/snippets']
 
 " carlitux/deoplete-ternjs
+
+" roxma/nvim-completion-manager
+set shortmess+=c
+inoremap <C-C> <Esc>
+inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+
+let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
+let g:cm_completekeys = "\<Plug>(cm_omnifunc)"
 
 " ternjs/tern_for_vim
 let g:tern#command = ['tern']
 let g:tern#arguments = ['--persistent']
+
+" }}}
+
+" Language servers {{{
+
+" autozimu/LanguageClient-neovim
 
 " }}}
 
@@ -413,8 +496,11 @@ let g:ale_linters = {
   \ 'css': ['stylelint'],
   \ 'html': [],
   \ 'sass': ['stylelint'],
-  \ 'scss': ['stylelint']
+  \ 'scss': ['stylelint'],
+  \ 'vue': ['eslint']
   \ }
+
+let g:ale_linter_aliases = {'vue': ['vue', 'html', 'css', 'javascript']}
 
 " }}}
 
@@ -426,6 +512,7 @@ let g:ale_linters = {
 let $FZF_DEFAULT_COMMAND = 'ag -l --hidden --ignore .git -g ""'
 nmap <M-p> :FZF<CR>
 nmap <M-P> :Buffers<CR>
+nmap <M-o> :Buffers<CR>
 
 " scrooloose/nerdtree
 let NERDTreeBookmarksFile = '~/.config/nvim/.cache/NERDTreeBookmarks'
@@ -493,7 +580,7 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.crypt = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
-let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.paste = ''
 let g:airline_symbols.spell = ''
@@ -564,6 +651,7 @@ let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 
 " posva/vim-vue
+let g:vue_disable_pre_processors = 1
 
 " }}}
 
