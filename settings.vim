@@ -215,8 +215,6 @@ autocmd BufReadPost *
 
 let g:seoul256_background = 235
 
-" let g:tender_airline = 1
-
 let g:wwdc16_term_italics = 1
 let g:wwdc16_term_trans_bg = 1
 
@@ -227,24 +225,25 @@ let g:neodark#use_256color = 1
 let g:neodark#terminal_transparent = 1
 
 let g:deepspace_italics = 1
-" let g:airline_theme = 'deep_space'
 
 let g:quantum_black = 1
 let g:quantum_italics = 1
-" let g:airline_theme = 'quantum'
 
-let g:spacegray_italicize_comments = 1
-
-" let g:airline_theme = 'one'
+let g:spacegray_use_italics = 1
+let g:spacegray_low_contrast = 1
 
 let g:one_allow_italics = 1
 
 let g:palenight_terminal_italics = 1
 
+" let g:tender_airline = 1
+let g:airline_theme = 'deep_space'
+" let g:airline_theme = 'quantum'
+" let g:airline_theme = 'one'
+
 set background=dark
 
-" colorscheme one
-colorscheme palenight
+colorscheme deep-space
 " }}}
 
 " Plugin settings {{{
@@ -272,7 +271,7 @@ let g:startify_list_order = [
   \ ]
 let g:startify_bookmarks = ['~/.config/nvim/', '~/.zshrc', '~/.config/alacritty/alacritty.yml']
 let g:startify_commands = [':PlugUpdate']
-let g:startify_update_oldfiles = 1
+let g:startify_update_oldfiles = 0
 let g:startify_session_before_save = [
   \ 'echo "Cleaning up before saving..."',
   \ 'silent! NERDTreeTabsClose'
@@ -280,12 +279,21 @@ let g:startify_session_before_save = [
 let g:startify_session_persistence = 1
 let g:startify_session_delete_buffers = 0
 let g:startify_change_to_dir = 1
-let g:startify_change_to_vcs_root = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_fortune_use_unicode = 1
+let g:startify_skiplist = [
+  \ '^/media/',
+  \ '^man:',
+  \ '^/tmp/',
+  \ '^/var/tmp/',
+  \ ]
 let g:startify_enable_special = 0
+let g:startify_enable_unsafe = 0
 let g:startify_session_sort = 1
 let g:startify_custom_indices = map(range(1,100), 'string(v:val)')
 " let g:startify_custom_header = []
 let g:startify_show_sessions = 1
+let g:startify_disable_at_vimenter = 0
 " nnoremap <M-F1> :Startify<CR>
 
 " mhinz/vim-grepper
@@ -350,15 +358,15 @@ nnoremap <leader>md :LivedownToggle<CR>
 let g:tcommentMaps = 0
 let g:tcommentGuessFileType = 0
 
-nmap <leader>cc :TComment<CR>
-nmap <leader>cm :TCommentBlock<CR>
-nmap <leader>ci :TCommentInline<CR>
-nmap <leader>cr :TCommentRight<CR>
+" nmap <leader>cc :TComment<CR>
+" nmap <leader>cm :TCommentBlock<CR>
+" nmap <leader>ci :TCommentInline<CR>
+" nmap <leader>cr :TCommentRight<CR>
 
-vmap <leader>cc :TComment<CR>
-vmap <leader>cm :TCommentBlock<CR>
-vmap <leader>ci :TCommentInline<CR>
-vmap <leader>cr :TCommentRight<CR>
+" vmap <leader>cc :TComment<CR>
+" vmap <leader>cm :TCommentBlock<CR>
+" vmap <leader>ci :TCommentInline<CR>
+" vmap <leader>cr :TCommentRight<CR>
 
 " tpope/vim-commentary
 " nmap <leader>cc gcc
@@ -380,6 +388,11 @@ vmap <M-S-Up> [egv
 vmap <M-S-K> [egv
 vmap <M-S-Down> ]egv
 vmap <M-S-J> ]egv
+
+" tyru/caw.vim
+" g:caw_operator_keymappings = 0
+nmap <Leader>c <Plug>(caw:prefix)
+xmap <Leader>c <Plug>(caw:prefix)
 
 " }}}
 
@@ -444,14 +457,18 @@ endfunction
 
 " carlitux/deoplete-ternjs
 
-" roxma/nvim-completion-manager
+" ncm2/ncm2
 set shortmess+=c
+set completeopt=noinsert,menuone,noselect
+
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
 inoremap <C-C> <Esc>
 inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 
-let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
-let g:cm_completekeys = "\<Plug>(cm_omnifunc)"
+" let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
+" let g:cm_completekeys = "\<Plug>(cm_omnifunc)"
 
 " ternjs/tern_for_vim
 let g:tern#command = ['tern']
@@ -514,6 +531,10 @@ nmap <M-p> :FZF<CR>
 nmap <M-P> :Buffers<CR>
 nmap <M-o> :Buffers<CR>
 
+" Lokaltog/neoranger
+nnoremap <silent> <leader>f :Ranger<CR>
+nnoremap <silent> <leader>F :RangerCurrentFile<CR>
+
 " scrooloose/nerdtree
 let NERDTreeBookmarksFile = '~/.config/nvim/.cache/NERDTreeBookmarks'
 let NERDTreeCascadeSingleChildDir = 1
@@ -522,8 +543,8 @@ let NERDTreeQuitOnOpen = 0
 let NERDTreeShowHidden = 1
 let NERDTreeShowBookmarks = 1
 
-nnoremap <leader>f :NERDTreeToggle<CR>
-nnoremap <leader>F :NERDTreeFind<CR>
+" nnoremap <leader>f :NERDTreeToggle<CR>
+" nnoremap <leader>F :NERDTreeFind<CR>
 
 " vim-ctrlspace/vim-ctrlspace
 " let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
@@ -553,23 +574,27 @@ let g:indent_guides_color_change_percent = 3
 
 " vim-airline/vim-airline
 let g:airline_powerline_fonts = 0
+let g:airline_symbols_ascii = 0
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffers_label = 'bufs'
 let g:airline#extensions#tabline#tabs_label = 'tabs'
-let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 0
 let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline#extensions#tabline#buffer_nr_format = '%s┆'
 let g:airline#extensions#tabline#fnamecollapse = 1
-let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline#extensions#hunks#hunk_symbols = ['+', '±', '-']
-let g:airline#extensions#ale#warning_symbol = ' '
-let g:airline#extensions#ale#error_symbol = ' '
+let g:airline#extensions#ale#warning_symbol = '?'
+let g:airline#extensions#ale#error_symbol = '!'
+" When using FontAwesome
+" let g:airline#extensions#ale#warning_symbol = ' '
+" let g:airline#extensions#ale#error_symbol = ' '
 
 let g:airline_symbols = {}
 
@@ -577,17 +602,27 @@ let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
-let g:airline_symbols.crypt = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+let g:airline_symbols.crypt = '🔑'
+let g:airline_symbols.readonly = '⛔'
+let g:airline_symbols.linenr = '📄'
 let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.paste = ''
-let g:airline_symbols.spell = ''
-let g:airline_symbols.notexists = '∄'
-let g:airline_symbols.whitespace = ''
+let g:airline_symbols.branch = '🔀'
+let g:airline_symbols.paste = '📋'
+let g:airline_symbols.spell = '🔤'
+let g:airline_symbols.notexists = '❎'
+let g:airline_symbols.whitespace = '⚪'
+" When using FontAwesome
+" let g:airline_symbols.crypt = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
+" let g:airline_symbols.maxlinenr = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.paste = ''
+" let g:airline_symbols.spell = ''
+" let g:airline_symbols.notexists = '∄'
+" let g:airline_symbols.whitespace = ''
 
-" let g:airline_section_c = '%{FilenameOrTerm()}'
+let g:airline_section_c = '%{FilenameOrTerm()}'
 
 function! FilenameOrTerm()
   return exists('b:term_title') ? b:term_title : expand('%:t')
@@ -619,11 +654,17 @@ nnoremap <leader>il :IndentLinesToggle<CR>
 
 " ap/vim-css-color
 
+" dag/vim-fish
+autocmd FileType fish compiler fish
+autocmd FileType fish setl textwidth=79
+autocmd FileType fish setl foldmethod=expr
+
 " digitaltoad/vim-jade
 
 " docunext/closetag.vim
 
 " gabrielelana/vim-markdown
+let g:markdown_include_jekyll_support = 1
 let g:markdown_enable_spell_checking = 0
 let g:markdown_enable_input_abbreviations = 0
 
@@ -652,6 +693,15 @@ let g:javascript_plugin_ngdoc = 1
 
 " posva/vim-vue
 let g:vue_disable_pre_processors = 1
+
+" vim-pandoc/vim-pandoc
+let g:pandoc#spell#enabled = 0
+
+let g:pandoc#command#custom_open = "PandocOpen"
+
+function! PandocOpen(file)
+  return 'open ' . shellescape(expand(a:file, ':p'))
+endfunction
 
 " }}}
 
