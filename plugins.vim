@@ -7,6 +7,7 @@ call plug#begin()
 " Utilities
 Plug 'editorconfig/editorconfig-vim'
 Plug 'kana/vim-operator-user'
+Plug 'lambdalisue/suda.vim'
 Plug 'MarcWeber/vim-addon-local-vimrc'
 Plug 'mhinz/vim-grepper'
 Plug 'mhinz/vim-startify'
@@ -17,15 +18,12 @@ Plug 'tpope/vim-rhubarb'
 
 " Editing
 Plug 'Raimondi/delimitMate'
-Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
+Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'typescript', 'vue', 'html', 'pug']}
 " Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
-" Plug 'mattn/emmet-vim', {'for': 'html'}
-" Plug 'scrooloose/nerdcommenter'
+" Plug 'mattn/emmet-vim', {'for': ['html', 'vue']}
 Plug 'shime/vim-livedown', {'for': ['markdown', 'pandoc']}
-" Plug 'tomtom/tcomment_vim', {'as': 'tcomment'}
-" Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
@@ -37,49 +35,42 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Autocomplete
-Plug 'ncm2/ncm2'
-" Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/nvim-yarp'
-
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-cssomni'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-tern', {'do': 'yarn'}
-Plug 'ncm2/ncm2-ultisnips'
-Plug 'ncm2/ncm2-vim'
-Plug 'Shougo/neco-vim'
-Plug 'wellle/tmux-complete.vim'
-
-Plug 'ncm2/ncm2-html-subscope', {'for': ['javascript', 'vue', 'pug']}
-Plug 'ncm2/ncm2-markdown-subscope', {'for': ['markdown', 'pandoc']}
-
-" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-" Plug 'Shougo/neosnippet.vim'
-" Plug 'Shougo/neosnippet-snippets'
-" Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
-" Plug 'calebeby/ncm-css', {'do': 'yarn'}
-" Plug 'othree/csscomplete.vim'
-" Plug 'roxma/nvim-cm-tern', {'do': 'yarn'}
-Plug 'ternjs/tern_for_vim', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
+" Plug 'ncm2/ncm2'
+" Plug 'roxma/nvim-yarp'
+"
+" Plug 'ncm2/ncm2-bufword'
+" Plug 'ncm2/ncm2-cssomni'
+" Plug 'ncm2/ncm2-path'
+" Plug 'ncm2/ncm2-tern', {'do': 'yarn'}
+" Plug 'ncm2/ncm2-ultisnips'
+" Plug 'ncm2/ncm2-vim'
+" Plug 'wellle/tmux-complete.vim'
+"
+" Plug 'ncm2/ncm2-html-subscope', {'for': ['javascript', 'vue', 'pug']}
+" Plug 'ncm2/ncm2-markdown-subscope', {'for': ['markdown', 'pandoc']}
+"
+" Plug 'ternjs/tern_for_vim', {'for': ['javascript', 'javascript.jsx', 'vue', 'html', 'pug']}
 
 " Language servers
-Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+" Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+
+" coc.vim
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+
+Plug 'Shougo/neco-vim'
+Plug 'neoclide/coc-neco'
 
 " Linting
-" Plug 'neomake/neomake'
 Plug 'w0rp/ale'
 
 " Navigation
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
 Plug 'Lokaltog/neoranger', {'branch': 'develop'}
-" Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-" Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
 
 " Information
 Plug 'airblade/vim-gitgutter'
-" Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'yggdroot/indentline'
@@ -91,20 +82,24 @@ Plug 'dag/vim-fish'
 Plug 'digitaltoad/vim-jade', {'for': ['jade', 'pug']}
 Plug 'docunext/closetag.vim', {'for': ['html', 'xml']}
 Plug 'elzr/vim-json', {'for': 'json'}
-Plug 'fleischie/vim-styled-components', {'for': ['javascript', 'javascript.jsx', 'vue']}
+Plug 'fleischie/vim-styled-components', {'for': ['javascript', 'javascript.jsx', 'vue', 'typescript']}
 " Plug 'gabrielelana/vim-markdown', {'for': 'markdown'}
 Plug 'gregsexton/MatchTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax'
 " Plug 'jelera/vim-javascript-syntax'
 Plug 'kchmck/vim-coffee-script', {'for': ['coffee', 'litcoffee']}
+Plug 'leafgarland/typescript-vim'
 " Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx'
 Plug 'MaxMEllon/vim-jsx-pretty', {'for': ['javascript.jsx', 'html']}
+Plug 'mboughaba/i3config.vim'
 " Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx', 'html']}
 Plug 'othree/html5.vim', {'for': 'html'}
 " Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
 " Plug 'othree/yajs.vim', {'for': ['javascript', 'javascript.jsx', 'html']}
 Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue', {'for': ['javascript', 'html', 'vue']}
+Plug 'Quramy/tsuquyomi'
+Plug 'Quramy/vim-js-pretty-template', {'for': ['javascript', 'vue', 'typescript']}
 Plug 'tpope/vim-jdaddy', {'for': 'json'}
 " Plug 'tpope/vim-markdown', {'for': 'markdown'}
 Plug 'vim-pandoc/vim-pandoc'
@@ -121,6 +116,7 @@ Plug 'jaromero/vim-monokai-refined'
 Plug 'jnurmine/zenburn'
 Plug 'junegunn/seoul256.vim'
 Plug 'KeitaNakamura/neodark.vim'
+Plug 'koirand/tokyo-metro.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'lifepillar/vim-wwdc16-theme'
 Plug 'mbbill/vim-seattle'

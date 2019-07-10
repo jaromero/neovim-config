@@ -14,6 +14,7 @@ set showcmd
 set nostartofline
 set viewoptions=folds,options,cursor,unix,slash
 set whichwrap=b,s,<,>,[,]
+set updatetime=300
 " }}}
 
 " Whitespace {{{
@@ -93,9 +94,12 @@ set nocursorcolumn
 set cursorline
 set number
 set showmatch
+set signcolumn=yes
 
-if ($TERMINOLOGY != 1)
-  set termguicolors
+set termguicolors
+
+if ($TERMINOLOGY == 1 || $TERM =~ "rxvt")
+  set notermguicolors
 endif
 " }}}
 
@@ -106,13 +110,20 @@ let g:perl_fold=1
 set foldlevelstart=99
 " }}}
 
+" Utility functions {{{
+
+function! s:check_backspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+" }}}
+
 " General keymaps and custom commands {{{
 command! CDhere call ChangeCurrDir()
 
 " Close window or delete buffer
-"noremap <silent> <leader>q :call CloseWindowOrKillBuffer()<CR>
-noremap <silent> <leader>q <C-W>c
-" noremap <silent> <leader>dd :bdelete<CR>
+noremap <silent> <leader>qq <C-W>c
 
 " Backspace in visual mode deletes selection
 vnoremap <BS> d
@@ -158,7 +169,7 @@ cnoremap <C-N> <Down>
 cnoremap <C-P> <Up>
 
 " Saner redraw
-nnoremap <leader>r :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR><C-L>
+nnoremap <leader>R :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR><C-L>
 
 " Exit out of terminal mode on double esc
 if has("nvim")
@@ -237,18 +248,21 @@ let g:one_allow_italics = 1
 let g:palenight_terminal_italics = 1
 
 " let g:tender_airline = 1
-let g:airline_theme = 'deep_space'
+" let g:airline_theme = 'deep_space'
 " let g:airline_theme = 'quantum'
-" let g:airline_theme = 'one'
+let g:airline_theme = 'one'
 
 set background=dark
 
-colorscheme deep-space
+colorscheme one
 " }}}
 
 " Plugin settings {{{
 
 " Utilities {{{
+
+" lambdalisue/suda.vim
+let g:suda#prefix = 'sudo://'
 
 " MarcWeber/vim-addon-local-vimrc
 let g:local_vimrc = {'names': ['.vimlocal'], 'hash_fun': 'LVRHashOfFile'}
@@ -345,33 +359,11 @@ let g:AutoPairsShortcutToggle = ''
 " let g:user_emmet_expandword_key = '<C-S-E>'
 " autocmd FileType html EmmetInstall
 
-" scrooloose/nerdcommenter
-let g:NERDSpaceDelims = 1
-
 " shime/vim-livedown
 let g:livedown_autorun = 1
 let g:livedown_port = 8999
 let g:livedown_open = 0
 nnoremap <leader>md :LivedownToggle<CR>
-
-" tomtom/tcomment
-let g:tcommentMaps = 0
-let g:tcommentGuessFileType = 0
-
-" nmap <leader>cc :TComment<CR>
-" nmap <leader>cm :TCommentBlock<CR>
-" nmap <leader>ci :TCommentInline<CR>
-" nmap <leader>cr :TCommentRight<CR>
-
-" vmap <leader>cc :TComment<CR>
-" vmap <leader>cm :TCommentBlock<CR>
-" vmap <leader>ci :TCommentInline<CR>
-" vmap <leader>cr :TCommentRight<CR>
-
-" tpope/vim-commentary
-" nmap <leader>cc gcc
-" nmap <leader>ca gcgc
-" vmap <leader>cc gc
 
 " tpope/vim-repeat
 
@@ -404,7 +396,7 @@ let g:UltiSnipsEnableSnipMate = 0
 let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-inoremap <silent> <C-E> <C-R>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<CR>
+" inoremap <silent> <C-E> <C-R>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<CR>
 
 " }}}
 
@@ -421,11 +413,6 @@ let g:deoplete#enable_ignore_case = 1
 
 " let g:deoplete#sources = {}
 " let g:deoplete#sources._ = ['buffer', 'tag', 'ultisnips']
-
-function! s:check_backspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
 
 " function! s:neosnippet_complete()
 "   if pumvisible()
@@ -461,11 +448,11 @@ endfunction
 set shortmess+=c
 set completeopt=noinsert,menuone,noselect
 
-autocmd BufEnter * call ncm2#enable_for_buffer()
+" autocmd BufEnter * call ncm2#enable_for_buffer()
 
-inoremap <C-C> <Esc>
-inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+" inoremap <C-C> <Esc>
+" inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+" inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 
 " let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
 " let g:cm_completekeys = "\<Plug>(cm_omnifunc)"
@@ -482,29 +469,105 @@ let g:tern#arguments = ['--persistent']
 
 " }}}
 
+" coc.vim {{{
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_backspace() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <Tab> <Plug>(coc-range-select)
+xmap <silent> <Tab> <Plug>(coc-range-select)
+xmap <silent> <S-Tab> <Plug>(coc-range-select-backword)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" }}}
+
 " Linting {{{
 
-" neomake/neomake
-let g:neomake_html_enabled_makers = []
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_scss_enabled_makers = ['stylelint']
-let g:neomake_open_list = 2
-let g:neomake_list_height = 2
-let g:neomake_warning_sign = {
-  \ 'text': '',
-  \ 'texthl': 'WarningMsg',
-  \ }
-let g:neomake_error_sign = {
-  \ 'text': '',
-  \ 'texthl': 'ErrorMsg',
-  \ }
-" autocmd! BufWritePost * Neomake
-
 " w0rp/ale
+
+" Standard glyphs/emojis
+" let g:ale_sign_warning = '?'
+" let g:ale_sign_error = '!'
+" let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_error_str = 'E'
+
+" When using FontAwesome
 let g:ale_sign_warning = ''
 let g:ale_sign_error = ''
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = ''
+let g:ale_echo_msg_error_str = ''
+
 let g:ale_echo_msg_format = '[%severity%][%linter%] %s'
 " let g:ale_set_quickfix = 1
 " let g:ale_open_list = 0
@@ -514,7 +577,8 @@ let g:ale_linters = {
   \ 'html': [],
   \ 'sass': ['stylelint'],
   \ 'scss': ['stylelint'],
-  \ 'vue': ['eslint']
+  \ 'vue': [],
+  \ 'typescript': ['tslint']
   \ }
 
 let g:ale_linter_aliases = {'vue': ['vue', 'html', 'css', 'javascript']}
@@ -532,29 +596,10 @@ nmap <M-P> :Buffers<CR>
 nmap <M-o> :Buffers<CR>
 
 " Lokaltog/neoranger
-nnoremap <silent> <leader>f :Ranger<CR>
-nnoremap <silent> <leader>F :RangerCurrentFile<CR>
-
-" scrooloose/nerdtree
-let NERDTreeBookmarksFile = '~/.config/nvim/.cache/NERDTreeBookmarks'
-let NERDTreeCascadeSingleChildDir = 1
-let NERDTreeChDirMode = 1
-let NERDTreeQuitOnOpen = 0
-let NERDTreeShowHidden = 1
-let NERDTreeShowBookmarks = 1
-
-" nnoremap <leader>f :NERDTreeToggle<CR>
-" nnoremap <leader>F :NERDTreeFind<CR>
-
-" vim-ctrlspace/vim-ctrlspace
-" let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
-
-" if executable('ag')
-"   let g:CtrlSpaceGlobCommand = 'ag -l --hidden --no-color -g ""'
-" endif
-
-" nnoremap <silent><C-Space> :CtrlSpace<CR>
-" nnoremap <silent><C-P> :CtrlSpace O<CR>
+" nnoremap <silent> <leader>f :Ranger<CR>
+" nnoremap <silent> <leader>F :RangerCurrentFile<CR>
+nnoremap <silent> <M-f> :Ranger<CR>
+nnoremap <silent> <M-S-f> :RangerCurrentFile<CR>
 
 " wesQ3/vim-windowswap
 
@@ -566,11 +611,6 @@ let NERDTreeShowBookmarks = 1
 let g:gitgutter_map_keys = 0
 let g:gitgutter_sign_modified = '±'
 let g:gitgutter_sign_modified_removed = '∓'
-
-" nathanaelkane/vim-indent-guides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_color_change_percent = 3
 
 " vim-airline/vim-airline
 let g:airline_powerline_fonts = 0
@@ -590,37 +630,42 @@ let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline#extensions#hunks#hunk_symbols = ['+', '±', '-']
-let g:airline#extensions#ale#warning_symbol = '?'
-let g:airline#extensions#ale#error_symbol = '!'
-" When using FontAwesome
-" let g:airline#extensions#ale#warning_symbol = ' '
-" let g:airline#extensions#ale#error_symbol = ' '
+" let g:airline#extensions#ale#warning_symbol = '?'
+" let g:airline#extensions#ale#error_symbol = '!'
 
+" When using FontAwesome
+let g:airline#extensions#ale#warning_symbol = ' '
+let g:airline#extensions#ale#error_symbol = ' '
+
+" Replace all symbols
 let g:airline_symbols = {}
 
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
-let g:airline_symbols.crypt = '🔑'
-let g:airline_symbols.readonly = '⛔'
-let g:airline_symbols.linenr = '📄'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.branch = '🔀'
-let g:airline_symbols.paste = '📋'
-let g:airline_symbols.spell = '🔤'
-let g:airline_symbols.notexists = '❎'
-let g:airline_symbols.whitespace = '⚪'
-" When using FontAwesome
-" let g:airline_symbols.crypt = ''
-" let g:airline_symbols.readonly = ''
-" let g:airline_symbols.linenr = ''
+
+" Standard glyphs/emojis
+" let g:airline_symbols.crypt = '🔑'
+" let g:airline_symbols.readonly = '⛔'
+" let g:airline_symbols.linenr = '📄'
 " let g:airline_symbols.maxlinenr = ''
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.paste = ''
-" let g:airline_symbols.spell = ''
-" let g:airline_symbols.notexists = '∄'
-" let g:airline_symbols.whitespace = ''
+" let g:airline_symbols.branch = '🔀'
+" let g:airline_symbols.paste = '📋'
+" let g:airline_symbols.spell = '🔤'
+" let g:airline_symbols.notexists = '❎'
+" let g:airline_symbols.whitespace = '⚪'
+
+" When using FontAwesome
+let g:airline_symbols.crypt = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.paste = ''
+let g:airline_symbols.spell = ''
+let g:airline_symbols.notexists = ''
+let g:airline_symbols.whitespace = ''
 
 let g:airline_section_c = '%{FilenameOrTerm()}'
 
@@ -674,6 +719,8 @@ let g:markdown_enable_input_abbreviations = 0
 
 " kchmck/vim-coffee-script
 
+" leafgarland/typescript-vim
+
 " mxw/vim-jsx
 " let g:jsx_ext_required = 0
 
@@ -693,6 +740,10 @@ let g:javascript_plugin_ngdoc = 1
 
 " posva/vim-vue
 let g:vue_disable_pre_processors = 1
+
+" Quramy/tsuquyomi
+
+" Quramy/vim-js-pretty-template
 
 " vim-pandoc/vim-pandoc
 let g:pandoc#spell#enabled = 0
