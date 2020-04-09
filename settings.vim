@@ -1,5 +1,8 @@
 " vim: fdm=marker fmr={{{,}}}
 
+set nocompatible
+filetype plugin on
+
 " Basic editor prefs {{{
 set clipboard+=unnamedplus
 set errorbells
@@ -140,8 +143,8 @@ vnoremap <leader>s :sort i<CR>
 vnoremap <leader>S :sort<CR>
 
 " Buffers - previous/next: S-F12, F12
-nnoremap <silent> <leader>{ :bp<CR>
-nnoremap <silent> <leader>} :bn<CR>
+nnoremap <silent> <leader>[ :bp<CR>
+nnoremap <silent> <leader>] :bn<CR>
 
 " Reselect block after indenting
 vnoremap < <gv
@@ -178,10 +181,10 @@ endif
 
 " Show syntax highlighting group for word under cursor
 function! <SID>SynStack()
-    if !exists('*synstack')
-        return
-    endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+  if !exists('*synstack')
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunction
 nnoremap <M-u> :call <SID>SynStack()<CR>
 
@@ -271,20 +274,28 @@ let g:local_vimrc = {'names': ['.vimlocal'], 'hash_fun': 'LVRHashOfFile'}
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*', 'term://.*']
 let g:EditorConfig_exec_path = '/usr/bin/editorconfig'
 
+" metakirby5/codi.vim
+" let g:codi#interpreters = {
+"  \ 'typescript': {
+"    \ 'bin': 'ts-node',
+"    \ 'prompt': '^\(>\|\.\.\.+\) ',
+"  \ },
+"\ }
+
+let g:codi#aliases = {
+  \ 'javascript.jsx': 'javascript'
+\ }
+
 " mhinz/startify
 let g:startify_session_dir = '~/.config/nvim/.cache/startify'
-let g:startify_list_order = [
-  \ ['Sessions'],
-  \ 'sessions',
-  \ ['Bookmarks'],
-  \ 'bookmarks',
-  \ ['Recently opened files'],
-  \ 'files',
-  \ ['Commands'],
-  \ 'commands',
+let g:startify_lists = [
+  \ {'type': 'sessions', 'header': ['Sessions']},
+  \ {'type': 'bookmarks', 'header': ['Bookmarks']},
+  \ {'type': 'files', 'header': ['Recent']},
+  \ {'type': 'commands', 'header': ['Commands']},
   \ ]
-let g:startify_bookmarks = ['~/.config/nvim/', '~/.zshrc', '~/.config/alacritty/alacritty.yml']
-let g:startify_commands = [':PlugUpdate']
+let g:startify_bookmarks = ['~/.config/i3/config', '~/.zshrc', '~/.config/alacritty/alacritty.yml']
+let g:startify_commands = ['PlugUpdate']
 let g:startify_update_oldfiles = 0
 let g:startify_session_before_save = [
   \ 'echo "Cleaning up before saving..."',
@@ -345,19 +356,9 @@ autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:}"
 let g:jsdoc_enable_es6 = 1
 nnoremap <silent> <C-CR> :JsDoc<CR>
 
-" jiangmiao/auto-pairs
-let g:AutoPairsShortcutToggle = ''
-
 " junegunn/goyo.vim
 
 " junegunn/vim-easy-align
-
-" mattn/emmet-vim
-" let g:user_emmet_install_global = 0
-" let g:emmet_html5 = 1
-" let g:user_emmet_expandabbr_key = '<C-E>'
-" let g:user_emmet_expandword_key = '<C-S-E>'
-" autocmd FileType html EmmetInstall
 
 " shime/vim-livedown
 let g:livedown_autorun = 1
@@ -402,70 +403,9 @@ let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 
 " Autocomplete {{{
 
-" Shougo/context_filetype.vim
-
-" Shougo/deoplete.nvim
-" Shougo/neosnippet.vim
-" Shougo/neosnippet-snippets
-
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_ignore_case = 1
-
-" let g:deoplete#sources = {}
-" let g:deoplete#sources._ = ['buffer', 'tag', 'ultisnips']
-
-" function! s:neosnippet_complete()
-"   if pumvisible()
-"     if neosnippet#expandable_or_jumpable()
-"       return deoplete#close_popup() . "\<Plug>(neosnippet_expand_or_jump)"
-"     endif
-"
-"     return deoplete#close_popup()
-"   endif
-"
-"   if neosnippet#expandable_or_jumpable()
-"     return "\<Plug>(neosnippet_expand_or_jump)"
-"   endif
-"
-"   return "\<Tab>"
-" endfunction
-
-" imap <expr><Tab> <SID>neosnippet_complete()
-
-" inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
-" inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
-
-" imap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-" imap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
-
-" call deoplete#custom#set('_', 'matchers', ['matcher_length', 'matcher_full_fuzzy'])
-
-" let g:neosnippet#snippets_directory=['~/.config/nvim/snippets']
-
-" carlitux/deoplete-ternjs
-
-" ncm2/ncm2
-set shortmess+=c
-set completeopt=noinsert,menuone,noselect
-
-" autocmd BufEnter * call ncm2#enable_for_buffer()
-
-" inoremap <C-C> <Esc>
-" inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-" inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
-
-" let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
-" let g:cm_completekeys = "\<Plug>(cm_omnifunc)"
-
-" ternjs/tern_for_vim
-let g:tern#command = ['tern']
-let g:tern#arguments = ['--persistent']
-
 " }}}
 
 " Language servers {{{
-
-" autozimu/LanguageClient-neovim
 
 " }}}
 
@@ -708,31 +648,16 @@ autocmd FileType fish setl foldmethod=expr
 
 " docunext/closetag.vim
 
-" gabrielelana/vim-markdown
-let g:markdown_include_jekyll_support = 1
-let g:markdown_enable_spell_checking = 0
-let g:markdown_enable_input_abbreviations = 0
-
 " gregsexton/MatchTag
-
-" jelera/vim-javascript-syntax
 
 " kchmck/vim-coffee-script
 
 " leafgarland/typescript-vim
 
-" mxw/vim-jsx
-" let g:jsx_ext_required = 0
-
 " MaxMEllon/vim-jsx-pretty
 let g:vim_jsx_pretty_colorful_config = 1
 
 "othree/html5.vim
-
-"othree/javascript-libraries-syntax
-" let g:used_javascript_libs = 'jquery,underscore,angularjs,angularui,angularuirouter,jasmine,ramda'
-
-" othree/yajs.vim
 
 " pangloss/vim-javascript
 let g:javascript_plugin_jsdoc = 1
