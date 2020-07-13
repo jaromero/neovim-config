@@ -18,6 +18,7 @@ set nostartofline
 set viewoptions=folds,options,cursor,unix,slash
 set whichwrap=b,s,<,>,[,]
 set updatetime=300
+set title
 " }}}
 
 " Whitespace {{{
@@ -99,7 +100,7 @@ set number
 set showmatch
 set signcolumn=yes
 
-set termguicolors
+set notermguicolors
 
 if ($TERMINOLOGY == 1 || $TERM =~ "rxvt")
   set notermguicolors
@@ -251,13 +252,11 @@ let g:one_allow_italics = 1
 let g:palenight_terminal_italics = 1
 
 " let g:tender_airline = 1
-" let g:airline_theme = 'deep_space'
-" let g:airline_theme = 'quantum'
-let g:airline_theme = 'one'
+let g:airline_theme = 'wpgtk'
 
 set background=dark
 
-colorscheme one
+colorscheme apprentice
 " }}}
 
 " Plugin settings {{{
@@ -530,10 +529,15 @@ let g:ale_linter_aliases = {'vue': ['vue', 'html', 'css', 'javascript']}
 " junegunn/fzf
 
 " junegunn/fzf.vim
-let $FZF_DEFAULT_COMMAND = 'ag -l --hidden --ignore .git -g ""'
-nmap <M-p> :FZF<CR>
+" lotabout/skim.vim
+" let $FZF_DEFAULT_COMMAND = 'ag -l --hidden --ignore .git -g ""'
+let $SKIM_DEFAULT_COMMAND = 'fd --type f --type l --color always --hidden --exclude .git'
+" nmap <M-p> :FZF<CR>
+nmap <M-p> :SK --ansi<CR>
 nmap <M-P> :Buffers<CR>
 nmap <M-o> :Buffers<CR>
+
+command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
 
 " Lokaltog/neoranger
 " nnoremap <silent> <leader>f :Ranger<CR>
@@ -597,15 +601,26 @@ let g:airline_right_alt_sep = ''
 " let g:airline_symbols.whitespace = '⚪'
 
 " When using FontAwesome
-let g:airline_symbols.crypt = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+" let g:airline_symbols.crypt = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
+" let g:airline_symbols.maxlinenr = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.paste = ''
+" let g:airline_symbols.spell = ''
+" let g:airline_symbols.notexists = ''
+" let g:airline_symbols.whitespace = ''
+
+" Text only
+let g:airline_symbols.crypt = '[X]'
+let g:airline_symbols.readonly = '[RO]'
+let g:airline_symbols.linenr = '#'
 let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.paste = ''
-let g:airline_symbols.spell = ''
-let g:airline_symbols.notexists = ''
-let g:airline_symbols.whitespace = ''
+let g:airline_symbols.branch = '[br]'
+let g:airline_symbols.paste = '[P]'
+let g:airline_symbols.spell = '[SP]'
+let g:airline_symbols.notexists = '[-]'
+let g:airline_symbols.whitespace = '[s]'
 
 let g:airline_section_c = '%{FilenameOrTerm()}'
 

@@ -47,9 +47,11 @@ Plug 'neoclide/coc-neco'
 Plug 'w0rp/ale'
 
 " Navigation
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
+" Plug 'junegunn/fzf.vim'
 " Plug 'Lokaltog/neoranger', {'branch': 'develop'}
+Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
+Plug 'lotabout/skim.vim'
 Plug 'wesQ3/vim-windowswap'
 
 " Information
@@ -79,6 +81,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue', {'for': ['javascript', 'html', 'vue']}
 Plug 'Quramy/tsuquyomi'
 Plug 'Quramy/vim-js-pretty-template', {'for': ['javascript', 'vue', 'typescript']}
+Plug 'tikhomirov/vim-glsl', {'for': 'glsl'}
 Plug 'tpope/vim-jdaddy', {'for': 'json'}
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -86,6 +89,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 " Colorschemes
 Plug 'ajh17/Spacegray.vim'
 Plug 'chriskempson/base16-vim'
+Plug 'chuling/vim-equinusocio-material'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'drewtempelmeyer/palenight.vim'
@@ -114,6 +118,9 @@ Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'whatyouhide/vim-gotham'
 Plug 'zeis/vim-kolor'
+
+Plug 'dylanaraps/wal.vim'
+Plug 'deviantfero/wpgtk.vim'
 
 Plug 'tsiemens/vim-aftercolors'
 
