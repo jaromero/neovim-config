@@ -22,12 +22,14 @@ Plug 'Raimondi/delimitMate'
 Plug 'heavenshell/vim-jsdoc', {'for': ['javascript', 'javascript.jsx', 'typescript', 'vue', 'html', 'pug']}
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'kkoomen/vim-doge'
 Plug 'shime/vim-livedown', {'for': ['markdown', 'pandoc']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tyru/caw.vim'
+Plug 'vimwiki/vimwiki'
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -36,6 +38,9 @@ Plug 'honza/vim-snippets'
 " Autocomplete
 
 " Language servers
+
+" Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " coc.vim
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
@@ -52,6 +57,10 @@ Plug 'w0rp/ale'
 " Plug 'Lokaltog/neoranger', {'branch': 'develop'}
 Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
 Plug 'lotabout/skim.vim'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'wesQ3/vim-windowswap'
 
 " Information
@@ -71,6 +80,7 @@ Plug 'docunext/closetag.vim', {'for': ['html', 'xml']}
 Plug 'elzr/vim-json', {'for': 'json'}
 Plug 'fleischie/vim-styled-components', {'for': ['javascript', 'javascript.jsx', 'vue', 'typescript']}
 Plug 'gregsexton/MatchTag', {'for': ['html', 'xml']}
+Plug 'GutenYe/json5.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'kchmck/vim-coffee-script', {'for': ['coffee', 'litcoffee']}
 Plug 'leafgarland/typescript-vim'
@@ -88,6 +98,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " Colorschemes
 Plug 'ajh17/Spacegray.vim'
+Plug 'arcticicestudio/nord-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'chuling/vim-equinusocio-material'
 Plug 'cseelus/vim-colors-lucid'

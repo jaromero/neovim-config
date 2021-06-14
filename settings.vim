@@ -252,11 +252,11 @@ let g:one_allow_italics = 1
 let g:palenight_terminal_italics = 1
 
 " let g:tender_airline = 1
-let g:airline_theme = 'wpgtk'
+" let g:airline_theme = 'wpgtk'
 
 set background=dark
 
-colorscheme apprentice
+colorscheme OceanicNext
 " }}}
 
 " Plugin settings {{{
@@ -293,7 +293,11 @@ let g:startify_lists = [
   \ {'type': 'files', 'header': ['Recent']},
   \ {'type': 'commands', 'header': ['Commands']},
   \ ]
-let g:startify_bookmarks = ['~/.config/i3/config', '~/.zshrc', '~/.config/alacritty/alacritty.yml']
+let g:startify_bookmarks = [
+  \ '~/.config/i3/config',
+  \ '~/.zshrc',
+  \ '~/.config/alacritty/alacritty.yml'
+  \ ]
 let g:startify_commands = ['PlugUpdate']
 let g:startify_update_oldfiles = 0
 let g:startify_session_before_save = [
@@ -359,6 +363,8 @@ nnoremap <silent> <C-CR> :JsDoc<CR>
 
 " junegunn/vim-easy-align
 
+" kkoomen/vim-doge
+
 " shime/vim-livedown
 let g:livedown_autorun = 1
 let g:livedown_port = 8999
@@ -409,6 +415,11 @@ let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 " }}}
 
 " coc.vim {{{
+
+" https://github.com/neoclide/coc.nvim/issues/856
+" if $NVM_BIN != ""
+"   let g:coc_node_path = "$NVM_BIN/node"
+" endif
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -533,17 +544,40 @@ let g:ale_linter_aliases = {'vue': ['vue', 'html', 'css', 'javascript']}
 " let $FZF_DEFAULT_COMMAND = 'ag -l --hidden --ignore .git -g ""'
 let $SKIM_DEFAULT_COMMAND = 'fd --type f --type l --color always --hidden --exclude .git'
 " nmap <M-p> :FZF<CR>
-nmap <M-p> :SK --ansi<CR>
-nmap <M-P> :Buffers<CR>
-nmap <M-o> :Buffers<CR>
+" nmap <M-p> :SK --ansi<CR>
+" nmap <M-P> :Buffers<CR>
+" nmap <M-o> :Buffers<CR>
 
-command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
+" command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
 
 " Lokaltog/neoranger
 " nnoremap <silent> <leader>f :Ranger<CR>
 " nnoremap <silent> <leader>F :RangerCurrentFile<CR>
 nnoremap <silent> <M-f> :Ranger<CR>
 nnoremap <silent> <M-S-f> :RangerCurrentFile<CR>
+
+" ms-jpq/chadtree
+nnoremap <Leader>e <cmd>CHADopen<CR>
+let g:chadtree_settings = {
+  \ 'ignore.name_exact': [
+    \ '.DS_Store',
+    \ '.directory',
+    \ 'Thumbs.db',
+    \ '.git',
+    \ 'node_modules'
+  \ ],
+  \ 'theme': {
+    \ 'icon_glyph_set': 'ascii',
+    \ 'text_colour_set': 'env',
+    \ 'icon_colour_set': 'github'
+  \ }
+\}
+
+" nvim-telescope/telescope.nvim
+nnoremap <M-p> <cmd>Telescope find_files<CR>
+nnoremap <M-o> <cmd>Telescope buffers<CR>
+nnoremap <M-F> <cmd>Telescope live_grep<CR>
+nnoremap <M-*> <cmd>Telescope grep_string<CR>
 
 " wesQ3/vim-windowswap
 
