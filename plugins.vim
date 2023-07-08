@@ -85,11 +85,11 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'kchmck/vim-coffee-script', {'for': ['coffee', 'litcoffee']}
 Plug 'leafgarland/typescript-vim'
 Plug 'MaxMEllon/vim-jsx-pretty', {'for': ['javascript.jsx', 'html']}
-Plug 'mboughaba/i3config.vim'
+" Plug 'mboughaba/i3config.vim'
 Plug 'othree/html5.vim', {'for': 'html'}
 Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue', {'for': ['javascript', 'html', 'vue']}
-Plug 'Quramy/tsuquyomi'
+" Plug 'Quramy/tsuquyomi'
 Plug 'Quramy/vim-js-pretty-template', {'for': ['javascript', 'vue', 'typescript']}
 Plug 'tikhomirov/vim-glsl', {'for': 'glsl'}
 Plug 'tpope/vim-jdaddy', {'for': 'json'}
@@ -97,7 +97,7 @@ Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " Colorschemes
-Plug 'ajh17/Spacegray.vim'
+" Plug 'ajh17/Spacegray.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'chuling/vim-equinusocio-material'
